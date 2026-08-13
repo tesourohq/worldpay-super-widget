@@ -1,0 +1,20 @@
+packages:
+  - 'apps/*'
+  - 'packages/*'
+
+# pnpm blocks dependency install scripts by default. Allowed below are the ones
+# that link or verify a native binary and genuinely need to run; the rest are
+# denied because their scripts do nothing we want:
+#   core-js - prints a donation banner
+#   less    - installs Playwright browsers when it thinks it's in a dev checkout
+allowBuilds:
+  '@parcel/watcher': true # native file watcher used by the Nx daemon
+  '@swc/core': true # platform check for the native binding
+  core-js: false
+  less: false
+  nx: true # sets up the Nx native module and daemon
+  sharp: true # verifies/builds the native image binary used by Next.js
+  unrs-resolver: true # napi binding for the ESLint import resolver
+
+minimumReleaseAgeExclude:
+  - '@tesouro/embedded-components-react@0.2.244'

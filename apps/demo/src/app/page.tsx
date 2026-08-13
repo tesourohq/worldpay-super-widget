@@ -14,7 +14,7 @@ export default function Index() {
         <div id="welcome">
           <h1>
             <span> Hello there, </span>
-            Welcome @embd-4854-scaffold/demo 👋
+            Welcome @tesouro/worldpay-super-widget-demo 👋
           </h1>
         </div>
 
@@ -387,7 +387,7 @@ export default function Index() {
               </svg>
               View project details
             </summary>
-            <pre>nx show project @embd-4854-scaffold/demo --web</pre>
+            <pre>nx show project @tesouro/worldpay-super-widget-demo --web</pre>
           </details>
           <details>
             <summary>

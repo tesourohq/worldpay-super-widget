@@ -1,10 +1,13 @@
 {
-  "name": "@embd-4854-scaffold/demo-e2e",
+  "name": "@tesouro/worldpay-super-widget-demo-e2e",
   "version": "0.0.1",
   "private": true,
+  "devDependencies": {
+    "@types/node": "^22.0.0"
+  },
   "nx": {
     "implicitDependencies": [
-      "@embd-4854-scaffold/demo"
+      "@tesouro/worldpay-super-widget-demo"
     ]
   }
 }

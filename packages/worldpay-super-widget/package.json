@@ -1,0 +1,35 @@
+{
+  "name": "@tesouro/worldpay-super-widget",
+  "version": "0.0.1",
+  "type": "module",
+  "main": "./dist/index.esm.js",
+  "module": "./dist/index.esm.js",
+  "types": "./dist/index.d.ts",
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "exports": {
+    "./package.json": "./package.json",
+    "./styles.css": "./dist/styles.css",
+    ".": {
+      "@embd-4854-scaffold/source": "./src/index.ts",
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.esm.js",
+      "default": "./dist/index.esm.js"
+    }
+  },
+  "files": [
+    "dist",
+    "!**/*.tsbuildinfo"
+  ],
+  "nx": {
+    "name": "worldpay-super-widget"
+  },
+  "dependencies": {
+    "@tesouro/embedded-components-react": "0.2.244"
+  },
+  "peerDependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  }
+}

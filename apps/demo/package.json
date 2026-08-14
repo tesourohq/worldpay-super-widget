@@ -3,8 +3,17 @@
   "version": "0.0.1",
   "private": true,
   "dependencies": {
+    "@tesouro/worldpay-super-widget": "workspace:*",
     "next": "~16.1.6",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
+  },
+  "nx": {
+    "targets": {
+      "dev": {
+        "comment": "Bundlers resolve @tesouro/worldpay-super-widget through its exports field to dist/, not to TypeScript source, so the library has to be built before the dev server can resolve it or its stylesheet. Use `nx watch-deps` alongside dev to pick up library edits without restarting.",
+        "dependsOn": ["^build"]
+      }
+    }
   }
 }

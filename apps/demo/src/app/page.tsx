@@ -1,3 +1,5 @@
+import { WorldpaySuperWidget } from '@tesouro/worldpay-super-widget';
+
 import styles from './page.module.css';
 
 export default function Index() {
@@ -16,6 +18,10 @@ export default function Index() {
             <span> Hello there, </span>
             Welcome @tesouro/worldpay-super-widget-demo 👋
           </h1>
+        </div>
+
+        <div id="worldpay-super-widget">
+          <WorldpaySuperWidget />
         </div>
 
         <div id="hero" className="rounded">

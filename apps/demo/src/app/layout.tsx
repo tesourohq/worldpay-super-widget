@@ -1,3 +1,4 @@
+import '@tesouro/worldpay-super-widget/styles.css';
 import './global.css';
 
 export const metadata = {

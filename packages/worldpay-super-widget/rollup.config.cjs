@@ -44,6 +44,13 @@ module.exports = withNx(
   },
   {
     // Provide additional rollup configuration here. See: https://rollupjs.org/configuration-options
+    output: {
+      // The widget owns a React context provider, so it only runs on the
+      // client. Rollup drops module-level directives when bundling, so the
+      // 'use client' in the source has to be re-added to the output or React
+      // Server Component hosts (Next.js app router) fail to render it.
+      banner: "'use client';",
+    },
     plugins: [
       emitDesignSystemStyles(),
       svg({

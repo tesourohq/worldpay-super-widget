@@ -4,7 +4,10 @@
     "allowJs": true,
     "outDir": "out-tsc/playwright",
     "sourceMap": false,
-    "types": ["node"]
+    "types": ["node"],
+    // page.evaluate() callbacks are compiled here but execute in the browser,
+    // so specs need DOM types alongside the Node types the config itself uses.
+    "lib": ["es2022", "dom"]
   },
   "include": [
     "**/*.ts",

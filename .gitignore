@@ -48,6 +48,12 @@ Thumbs.db
 .next
 out
 
+# Local environment. The demo's widget-token route reads a client secret and a
+# widget secret from here, so only the checked-in template is tracked.
+.env
+.env.*
+!.env.example
+
 test-output
 
 vitest.config.*.timestamp*

@@ -166,8 +166,8 @@ importers:
   apps/demo:
     dependencies:
       '@tesouro/embedded-components-widget-token':
-        specifier: 0.2.249
-        version: 0.2.249
+        specifier: 0.2.264
+        version: 0.2.264
       '@tesouro/worldpay-super-widget':
         specifier: workspace:*
         version: link:../../packages/worldpay-super-widget
@@ -190,8 +190,8 @@ importers:
   packages/worldpay-super-widget:
     dependencies:
       '@tesouro/embedded-components-react':
-        specifier: 0.2.262
-        version: 0.2.262(@babel/core@7.29.7(supports-color@8.1.1))(@babel/types@7.29.8)(@date-fns/tz@1.5.0)(@mui/system@6.5.0(@emotion/react@11.14.0(@types/react@19.2.18)(react@19.2.8)(supports-color@8.1.1))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.18)(react@19.2.8)(supports-color@8.1.1))(@types/react@19.2.18)(react@19.2.8)(supports-color@8.1.1))(@types/react@19.2.18)(react@19.2.8))(@sinclair/typebox@0.34.52)(@standard-schema/spec@1.1.0)(@tanstack/query-core@5.101.4)(@types/react-dom@19.2.4(@types/react@19.2.18))(@types/react@19.2.18)(ajv-formats@2.1.1(ajv@8.20.0))(ajv@8.20.0)(babel-plugin-macros@3.1.0)(dayjs@1.11.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(supports-color@8.1.1)(typanion@3.14.0)
+        specifier: 0.2.269
+        version: 0.2.269(@babel/core@7.29.7(supports-color@8.1.1))(@babel/types@7.29.8)(@date-fns/tz@1.5.0)(@mui/system@6.5.0(@emotion/react@11.14.0(@types/react@19.2.18)(react@19.2.8)(supports-color@8.1.1))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.18)(react@19.2.8)(supports-color@8.1.1))(@types/react@19.2.18)(react@19.2.8)(supports-color@8.1.1))(@types/react@19.2.18)(react@19.2.8))(@sinclair/typebox@0.34.52)(@standard-schema/spec@1.1.0)(@tanstack/query-core@5.101.4)(@types/react-dom@19.2.4(@types/react@19.2.18))(@types/react@19.2.18)(ajv-formats@2.1.1(ajv@8.20.0))(ajv@8.20.0)(babel-plugin-macros@3.1.0)(dayjs@1.11.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(supports-color@8.1.1)(typanion@3.14.0)
       react:
         specifier: ^19.0.0
         version: 19.2.8
@@ -3610,14 +3610,14 @@ packages:
     resolution: {integrity: sha512-ldZXEhOBb8Is7xLs01fR3YEc3DERiz5silj8tnGkFZytt1abEvl/GhUmCE0PMLaMPTa3Jk4HbKmRlHmu+gCftg==}
     engines: {node: '>=12'}
 
-  '@tesouro/embedded-components-react@0.2.262':
-    resolution: {integrity: sha512-qXK1pUzEqz0tlCpI/5H58mgWwC9jDpR5ngX84wEwh/V5nnz2BZeDgcRCHYVU+v8LUo2kMhX+ejMAC5qTLyUEHA==}
+  '@tesouro/embedded-components-react@0.2.269':
+    resolution: {integrity: sha512-zepBNmwef4NyQJ4Oe8niwR2K3pg5asXSSDrA2nBI0RnMbDHJ08+YYGVhIzoHz2ZK0648Tv+1IVnPVyhCvdAvCQ==}
     peerDependencies:
       react: ^19.2.8
       react-dom: ^19.2.8
 
-  '@tesouro/embedded-components-widget-token@0.2.249':
-    resolution: {integrity: sha512-EEM55mG+V1uxawka+sqCf+buz24Gd9P/OHF5rEULX/AtwzgR+VXrmO8aw7vWqChNkezNPbbO6jZyp6AUtgpzYw==}
+  '@tesouro/embedded-components-widget-token@0.2.264':
+    resolution: {integrity: sha512-4PO3YVq/Vv/WcpNMBo5h3ybGbeaFjP/JsuPM4QtcnXj2oFEmog3K2mkb8hlBXld1D5egzfRB7TQn9cm0OQajKg==}
 
   '@testing-library/dom@10.4.0':
     resolution: {integrity: sha512-pemlzrSESWbdAloYml3bAJMEfNh1Z7EduzqPKprCH5S341frlpYnUEW0H72dLxa6IsYr+mPno20GiSm+h9dEdQ==}
@@ -12478,7 +12478,7 @@ snapshots:
 
   '@tanstack/table-core@8.21.3': {}
 
-  '@tesouro/embedded-components-react@0.2.262(@babel/core@7.29.7(supports-color@8.1.1))(@babel/types@7.29.8)(@date-fns/tz@1.5.0)(@mui/system@6.5.0(@emotion/react@11.14.0(@types/react@19.2.18)(react@19.2.8)(supports-color@8.1.1))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.18)(react@19.2.8)(supports-color@8.1.1))(@types/react@19.2.18)(react@19.2.8)(supports-color@8.1.1))(@types/react@19.2.18)(react@19.2.8))(@sinclair/typebox@0.34.52)(@standard-schema/spec@1.1.0)(@tanstack/query-core@5.101.4)(@types/react-dom@19.2.4(@types/react@19.2.18))(@types/react@19.2.18)(ajv-formats@2.1.1(ajv@8.20.0))(ajv@8.20.0)(babel-plugin-macros@3.1.0)(dayjs@1.11.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(supports-color@8.1.1)(typanion@3.14.0)':
+  '@tesouro/embedded-components-react@0.2.269(@babel/core@7.29.7(supports-color@8.1.1))(@babel/types@7.29.8)(@date-fns/tz@1.5.0)(@mui/system@6.5.0(@emotion/react@11.14.0(@types/react@19.2.18)(react@19.2.8)(supports-color@8.1.1))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.18)(react@19.2.8)(supports-color@8.1.1))(@types/react@19.2.18)(react@19.2.8)(supports-color@8.1.1))(@types/react@19.2.18)(react@19.2.8))(@sinclair/typebox@0.34.52)(@standard-schema/spec@1.1.0)(@tanstack/query-core@5.101.4)(@types/react-dom@19.2.4(@types/react@19.2.18))(@types/react@19.2.18)(ajv-formats@2.1.1(ajv@8.20.0))(ajv@8.20.0)(babel-plugin-macros@3.1.0)(dayjs@1.11.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(supports-color@8.1.1)(typanion@3.14.0)':
     dependencies:
       '@base-ui/react': 1.7.0(@date-fns/tz@1.5.0)(@types/react@19.2.18)(date-fns@4.4.0)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       '@emotion/cache': 11.14.0
@@ -12577,7 +12577,7 @@ snapshots:
       - vest
       - yup
 
-  '@tesouro/embedded-components-widget-token@0.2.249':
+  '@tesouro/embedded-components-widget-token@0.2.264':
     dependencies:
       jose: 6.2.9
 

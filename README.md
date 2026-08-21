@@ -35,7 +35,7 @@ its own visibility.
 | `TESOURO_ORGANIZATION_REFERENCE` | yes      | Stable, opaque id for the business the user belongs to. Drives widget visibility via `application-status`.                                                   |
 | `DEMO_USER_ID`                   | yes      | The demo's stand-in user identity — it has no login. A real host reads this from its own signed session.                                                     |
 | `DEMO_USER_EMAIL`                | yes      | As above.                                                                                                                                                    |
-| `TESOURO_API_BASE_URL`           | no       | Which Tesouro API to talk to. Defaults to `https://api.sandbox.stage.tesouro.com`. Rejected unless it is one of the known origins, rather than falling back. |
+| `TESOURO_API_BASE_URL`           | no       | Which Tesouro API to talk to. Defaults to `https://api.sandbox.stage.tesouro.com`. Rejected unless it is one of the known origins, rather than falling back — though a trailing slash or odd casing is normalized, not rejected. |
 
 ### How the token gets there
 

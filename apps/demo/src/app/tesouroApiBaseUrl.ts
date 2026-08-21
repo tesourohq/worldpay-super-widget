@@ -26,6 +26,11 @@ export const DEFAULT_TESOURO_API_BASE_URL =
  * Resolves `TESOURO_API_BASE_URL`, rejecting anything outside the known set
  * rather than falling back. A typo that silently reverted to the sandbox would
  * look like a working demo pointed at the wrong environment.
+ *
+ * Only a genuinely different origin is a typo. A trailing slash or odd casing
+ * is a formatting difference — an origin is case-insensitive, and
+ * `https://api.tesouro.com/` is an ordinary way to write one — so both are
+ * normalized away before matching instead of failing the request.
  */
 export function resolveTesouroApiBaseUrl(
   value: string | undefined,
@@ -33,7 +38,8 @@ export function resolveTesouroApiBaseUrl(
   const trimmed = value?.trim();
   if (!trimmed) return DEFAULT_TESOURO_API_BASE_URL;
 
-  const match = TESOURO_API_BASE_URLS.find((baseUrl) => baseUrl === trimmed);
+  const normalized = trimmed.replace(/\/+$/, '').toLowerCase();
+  const match = TESOURO_API_BASE_URLS.find((baseUrl) => baseUrl === normalized);
   if (!match) {
     throw new Error(
       `TESOURO_API_BASE_URL is "${trimmed}", which is not a Tesouro API origin. Expected one of: ${TESOURO_API_BASE_URLS.join(', ')}`,

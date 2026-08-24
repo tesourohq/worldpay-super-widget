@@ -1,10 +1,64 @@
-# EMBD4854Scaffold
+# worldpay-super-widget
+
+Home of [`@tesouro/worldpay-super-widget`](./packages/worldpay-super-widget), the
+publishable React library that wraps embedded banking's `WidgetSuite`, and of
+`apps/demo`, a Next.js host that runs it against a live gateway.
+
+## Running the demo
+
+The demo mints a real widget token, so it needs partner credentials. Copy the
+template and fill it in:
+
+```sh
+cp apps/demo/.env.example apps/demo/.env.local
+pnpm nx dev @tesouro/worldpay-super-widget-demo
+```
+
+`.env` files are gitignored apart from the template — do not commit real values.
+
+Without credentials the app still starts and the suite still mounts, but
+`POST /api/widget-token` answers `500` and no section resolves its entitlements.
+The e2e suite stubs the mint and the gateway, so it runs green either way.
+
+### Environment variables
+
+All of these are read on the server only. **None may take a `NEXT_PUBLIC_`
+prefix.** Two are secrets, and `TESOURO_ORGANIZATION_REFERENCE` decides which
+widgets a user can see — accepting it from the browser would let the caller pick
+its own visibility.
+
+| Variable                         | Required | What it is                                                                                                                                                   |
+| -------------------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `TESOURO_CLIENT_ID`              | yes      | Partner client id for the RFC 8693 token exchange.                                                                                                           |
+| `TESOURO_CLIENT_SECRET`          | yes      | **Secret.** Partner client secret, minted into the JWE payload.                                                                                              |
+| `TESOURO_WIDGET_SECRET`          | yes      | **Secret.** Shared key the JWE is encrypted with (`A256KW` + `A256GCM`).                                                                                     |
+| `TESOURO_ORGANIZATION_REFERENCE` | yes      | Stable, opaque id for the business the user belongs to. Drives widget visibility via `application-status`.                                                   |
+| `DEMO_USER_ID`                   | yes      | The demo's stand-in user identity — it has no login. A real host reads this from its own signed session.                                                     |
+| `DEMO_USER_EMAIL`                | yes      | As above.                                                                                                                                                    |
+| `TESOURO_API_BASE_URL`           | no       | Which Tesouro API to talk to. Defaults to `https://api.sandbox.stage.tesouro.com`. Rejected unless it is one of the known origins, rather than falling back — though a trailing slash or odd casing is normalized, not rejected. |
+
+### How the token gets there
+
+1. `apps/demo/src/app/api/widget-token/route.ts` mints a JWE with
+   `configureCreateWidgetToken` from
+   `@tesouro/embedded-components-widget-token`, and returns `{ widgetToken, exp }`.
+   It is `force-dynamic`, so it is never prerendered with a token baked in.
+2. `WidgetSuiteHost` (a client component) passes a `fetch` of that route to
+   `WorldpaySuperWidget` as its `fetcher`.
+3. `RefreshingRootWidgetProvider` inside the widget calls the fetcher on mount
+   and re-calls it at `exp - leadSeconds`, so the token rotates without a reload.
+
+Tokens are minted with `expirationInSeconds: 600` against the widget's
+`leadSeconds` default of 120 — refresh at 480s, with 120s of retry headroom.
+The two are paired deliberately; see the
+[package README](./packages/worldpay-super-widget/README.md) before changing
+either.
+
+## Nx workspace
 
 <a alt="Nx logo" href="https://nx.dev" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="45"></a>
 
-✨ Your new, shiny [Nx workspace](https://nx.dev) is ready ✨.
-
-[Learn more about this workspace setup and its capabilities](https://nx.dev/nx-api/next?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects) or run `pnpm nx graph` to visually explore what was created. Now, let's get you up to speed!
+[Learn more about this workspace setup and its capabilities](https://nx.dev/nx-api/next?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) or run `pnpm nx graph` to visually explore what was created.
 
 ## Run tasks
 
@@ -89,12 +143,13 @@ Nx Console is an editor extension that enriches your developer experience. It le
 
 Learn more:
 
-- [Learn more about this workspace setup](https://nx.dev/nx-api/next?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects)
+- [Learn more about this workspace setup](https://nx.dev/nx-api/next?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
 - [Learn about Nx on CI](https://nx.dev/ci/intro/ci-with-nx?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
 - [Releasing Packages with Nx release](https://nx.dev/features/manage-releases?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
 - [What are Nx plugins?](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
 
 And join the Nx community:
+
 - [Discord](https://go.nx.dev/community)
 - [Follow us on X](https://twitter.com/nxdevtools) or [LinkedIn](https://www.linkedin.com/company/nrwl)
 - [Our Youtube channel](https://www.youtube.com/@nxdevtools)

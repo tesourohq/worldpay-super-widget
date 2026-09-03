@@ -2,7 +2,40 @@
 
 Home of [`@tesouro/worldpay-super-widget`](./packages/worldpay-super-widget), the
 publishable React library that wraps embedded banking's `WidgetSuite`, and of
-`apps/demo`, a Next.js host that runs it against a live gateway.
+[`apps/demo`](./apps/demo), a Next.js host that runs it against a live gateway.
+
+## Start here
+
+**[`apps/demo`](./apps/demo) is the worked example.** It is a real host, not a
+sketch: it mints a real widget token server-side and mounts the widget against
+the live gateway, and the e2e suite keeps it honest. Copy from it rather than
+from a snippet.
+
+An integration is four files. Read them in this order:
+
+| #   | File                                                                                           | What it shows                                                                                            |
+| --- | ---------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| 1   | [`apps/demo/.env.example`](./apps/demo/.env.example)                                           | Everything you need to configure, and why none of it may be `NEXT_PUBLIC_`.                              |
+| 2   | [`apps/demo/src/app/api/widget-token/route.ts`](./apps/demo/src/app/api/widget-token/route.ts) | **The server mint.** `configureCreateWidgetToken` → `{ widgetToken, exp }`, `force-dynamic`, `no-store`. |
+| 3   | [`apps/demo/src/app/WidgetSuiteHost.tsx`](./apps/demo/src/app/WidgetSuiteHost.tsx)             | **The client mount.** One component, plus the module-scope `fetcher` the refresh manager keys on.        |
+| 4   | [`apps/demo/src/app/tesouroApiBaseUrl.ts`](./apps/demo/src/app/tesouroApiBaseUrl.ts)           | Narrowing an environment variable to the `baseUrl` union the package accepts.                            |
+
+Then two more, when you want them:
+
+- [`apps/demo-e2e/src/widget-suite.spec.ts`](./apps/demo-e2e/src/widget-suite.spec.ts)
+  — how the integration is proven, and how to exercise your own mount with no
+  credentials by stubbing the mint at the network layer.
+- [`packages/worldpay-super-widget/README.md`](./packages/worldpay-super-widget/README.md)
+  — the package's own API: props, entry points, sections, and the expiry/refresh
+  contract.
+
+### Repo layout
+
+| Path                                                                 | What it is                                                             |
+| -------------------------------------------------------------------- | ---------------------------------------------------------------------- |
+| [`packages/worldpay-super-widget`](./packages/worldpay-super-widget) | The publishable library. The thing you install.                        |
+| [`apps/demo`](./apps/demo)                                           | The worked example: a Next.js host wired end to end.                   |
+| [`apps/demo-e2e`](./apps/demo-e2e)                                   | Playwright suite covering the demo, including the token refresh cycle. |
 
 ## Running the demo
 
@@ -27,14 +60,14 @@ prefix.** Two are secrets, and `TESOURO_ORGANIZATION_REFERENCE` decides which
 widgets a user can see — accepting it from the browser would let the caller pick
 its own visibility.
 
-| Variable                         | Required | What it is                                                                                                                                                   |
-| -------------------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `TESOURO_CLIENT_ID`              | yes      | Partner client id for the RFC 8693 token exchange.                                                                                                           |
-| `TESOURO_CLIENT_SECRET`          | yes      | **Secret.** Partner client secret, minted into the JWE payload.                                                                                              |
-| `TESOURO_WIDGET_SECRET`          | yes      | **Secret.** Shared key the JWE is encrypted with (`A256KW` + `A256GCM`).                                                                                     |
-| `TESOURO_ORGANIZATION_REFERENCE` | yes      | Stable, opaque id for the business the user belongs to. Drives widget visibility via `application-status`.                                                   |
-| `DEMO_USER_ID`                   | yes      | The demo's stand-in user identity — it has no login. A real host reads this from its own signed session.                                                     |
-| `DEMO_USER_EMAIL`                | yes      | As above.                                                                                                                                                    |
+| Variable                         | Required | What it is                                                                                                                                                                                                                       |
+| -------------------------------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `TESOURO_CLIENT_ID`              | yes      | Partner client id for the RFC 8693 token exchange.                                                                                                                                                                               |
+| `TESOURO_CLIENT_SECRET`          | yes      | **Secret.** Partner client secret, minted into the JWE payload.                                                                                                                                                                  |
+| `TESOURO_WIDGET_SECRET`          | yes      | **Secret.** Shared key the JWE is encrypted with (`A256KW` + `A256GCM`).                                                                                                                                                         |
+| `TESOURO_ORGANIZATION_REFERENCE` | yes      | Stable, opaque id for the business the user belongs to. Drives widget visibility via `application-status`.                                                                                                                       |
+| `DEMO_USER_ID`                   | yes      | The demo's stand-in user identity — it has no login. A real host reads this from its own signed session.                                                                                                                         |
+| `DEMO_USER_EMAIL`                | yes      | As above.                                                                                                                                                                                                                        |
 | `TESOURO_API_BASE_URL`           | no       | Which Tesouro API to talk to. Defaults to `https://api.sandbox.stage.tesouro.com`. Rejected unless it is one of the known origins, rather than falling back — though a trailing slash or odd casing is normalized, not rejected. |
 
 ### How the token gets there
@@ -54,103 +87,17 @@ The two are paired deliberately; see the
 [package README](./packages/worldpay-super-widget/README.md) before changing
 either.
 
-## Nx workspace
+## Commands
 
-<a alt="Nx logo" href="https://nx.dev" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="45"></a>
+| Command                                               | What it does                   |
+| ----------------------------------------------------- | ------------------------------ |
+| `pnpm nx dev @tesouro/worldpay-super-widget-demo`     | Run the demo host.             |
+| `pnpm nx build @tesouro/worldpay-super-widget-demo`   | Production build of the demo.  |
+| `pnpm nx build worldpay-super-widget`                 | Bundle the library to `dist/`. |
+| `pnpm nx test worldpay-super-widget`                  | Unit tests.                    |
+| `pnpm nx e2e @tesouro/worldpay-super-widget-demo-e2e` | Playwright suite.              |
+| `pnpm nx lint worldpay-super-widget`                  | Lint.                          |
+| `pnpm nx typecheck worldpay-super-widget`             | Type-check.                    |
 
-[Learn more about this workspace setup and its capabilities](https://nx.dev/nx-api/next?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) or run `pnpm nx graph` to visually explore what was created.
-
-## Run tasks
-
-To run the dev server for your app, use:
-
-```sh
-pnpm nx dev @tesouro/worldpay-super-widget-demo
-```
-
-To create a production bundle:
-
-```sh
-pnpm nx build @tesouro/worldpay-super-widget-demo
-```
-
-To see all available targets to run for a project, run:
-
-```sh
-pnpm nx show project @tesouro/worldpay-super-widget-demo
-```
-
-These targets are either [inferred automatically](https://nx.dev/concepts/inferred-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) or defined in the `project.json` or `package.json` files.
-
-[More about running tasks in the docs &raquo;](https://nx.dev/features/run-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-## Add new projects
-
-While you could add new projects to your workspace manually, you might want to leverage [Nx plugins](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) and their [code generation](https://nx.dev/features/generate-code?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) feature.
-
-Use the plugin's generator to create new projects.
-
-To generate a new application, use:
-
-```sh
-pnpm nx g @nx/next:app demo
-```
-
-To generate a new library, use:
-
-```sh
-pnpm nx g @nx/react:lib mylib
-```
-
-You can use `pnpm nx list` to get a list of installed plugins. Then, run `pnpm nx list <plugin-name>` to learn about more specific capabilities of a particular plugin. Alternatively, [install Nx Console](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) to browse plugins and generators in your IDE.
-
-[Learn more about Nx plugins &raquo;](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) | [Browse the plugin registry &raquo;](https://nx.dev/plugin-registry?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-## Set up CI!
-
-### Step 1
-
-To connect to Nx Cloud, run the following command:
-
-```sh
-pnpm nx connect
-```
-
-Connecting to Nx Cloud ensures a [fast and scalable CI](https://nx.dev/ci/intro/why-nx-cloud?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) pipeline. It includes features such as:
-
-- [Remote caching](https://nx.dev/ci/features/remote-cache?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Task distribution across multiple machines](https://nx.dev/ci/features/distribute-task-execution?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Automated e2e test splitting](https://nx.dev/ci/features/split-e2e-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Task flakiness detection and rerunning](https://nx.dev/ci/features/flaky-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-### Step 2
-
-Use the following command to configure a CI workflow for your workspace:
-
-```sh
-pnpm nx g ci-workflow
-```
-
-[Learn more about Nx on CI](https://nx.dev/ci/intro/ci-with-nx#ready-get-started-with-your-provider?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-## Install Nx Console
-
-Nx Console is an editor extension that enriches your developer experience. It lets you run tasks, generate code, and improves code autocompletion in your IDE. It is available for VSCode and IntelliJ.
-
-[Install Nx Console &raquo;](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-## Useful links
-
-Learn more:
-
-- [Learn more about this workspace setup](https://nx.dev/nx-api/next?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Learn about Nx on CI](https://nx.dev/ci/intro/ci-with-nx?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Releasing Packages with Nx release](https://nx.dev/features/manage-releases?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [What are Nx plugins?](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-And join the Nx community:
-
-- [Discord](https://go.nx.dev/community)
-- [Follow us on X](https://twitter.com/nxdevtools) or [LinkedIn](https://www.linkedin.com/company/nrwl)
-- [Our Youtube channel](https://www.youtube.com/@nxdevtools)
-- [Our blog](https://nx.dev/blog?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+Workspace tooling — generators, task running, CI, Nx Console — lives in
+[`NX.md`](./NX.md).

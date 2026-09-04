@@ -2,12 +2,10 @@
 
 import {
   RefreshingRootWidgetProvider,
-  type RefreshingRootWidgetProviderProps,
-} from '@tesouro/embedded-components-react';
-import {
   WidgetSuite,
+  type RefreshingRootWidgetProviderProps,
   type WidgetSuiteProps,
-} from '@tesouro/embedded-components-react/experimental/WidgetSuite';
+} from '@tesouro/embedded-components-react';
 
 /**
  * How long before a token's `exp` the provider mints its replacement.
@@ -38,13 +36,19 @@ export interface WorldpaySuperWidgetProps {
    */
   fetcher: RefreshingRootWidgetProviderProps['fetcher'];
   /**
-   * Which sections the suite offers, in menu order. Required with no default —
-   * a section list is the host's page composition and belongs at the call site.
+   * Which sections the suite offers, in menu order.
+   *
+   * Defaults to `WIDGET_SUITE_DEFAULT_SECTIONS` — the whole registry, in the
+   * shipped menu order — so the common mount is `fetcher` and nothing else.
+   * Name the list to compose a narrower page, or to order it differently.
    *
    * A section listed here is still hidden when the minted token's scopes do not
-   * earn it, so this is the ceiling rather than a promise of what renders.
+   * earn it, so this is the ceiling rather than a promise of what renders. That
+   * is also what makes the default safe: a section added to the registry
+   * upstream reaches a host that took the default, and a user whose token does
+   * not earn it still does not see it.
    */
-  sections: WidgetSuiteProps['sections'];
+  sections?: WidgetSuiteProps['sections'];
   /** API base URL. Falls back to the global widget config when omitted. */
   baseUrl?: RefreshingRootWidgetProviderProps['baseUrl'];
   /** Org ID for data requests. Falls back to the init response when omitted. */
@@ -76,6 +80,10 @@ export function WorldpaySuperWidget({
         pass-through mode, inheriting this provider's client, org and
         `QueryClient` instead of firing a second `/init`, so one init call
         serves every section.
+
+        `sections` is forwarded even when undefined: the suite defaults the
+        prop itself, so omitting it here would only duplicate that default in
+        a second place for it to drift from.
       */}
       <WidgetSuite sections={sections} />
     </RefreshingRootWidgetProvider>

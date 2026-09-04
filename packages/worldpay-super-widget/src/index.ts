@@ -5,12 +5,15 @@ export {
 } from './lib/worldpay-super-widget';
 
 /*
- * The section vocabulary, re-exported so a host can name what it wants on the
- * page without importing the experimental subpath of
- * `@tesouro/embedded-components-react` itself. `sections` is required and
- * typed as a union of ids, so there is no way to call this widget without it.
+ * The section vocabulary, re-exported so a host that narrows or reorders
+ * `sections` can name the ids without taking its own direct dependency on
+ * `@tesouro/embedded-components-react` — which it otherwise has no reason to
+ * install, since this package wraps it whole.
+ *
+ * `WIDGET_SUITE_DEFAULT_SECTIONS` is also what `sections` falls back to, so it
+ * is worth having on hand to spread and edit rather than retype.
  */
 export {
   WIDGET_SUITE_DEFAULT_SECTIONS,
   WidgetSuiteSectionId,
-} from '@tesouro/embedded-components-react/experimental/WidgetSuite';
+} from '@tesouro/embedded-components-react';

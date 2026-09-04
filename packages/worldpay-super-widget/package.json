@@ -26,7 +26,7 @@
     "name": "worldpay-super-widget"
   },
   "dependencies": {
-    "@tesouro/embedded-components-react": "0.2.269"
+    "@tesouro/embedded-components-react": "0.3.44"
   },
   "peerDependencies": {
     "react": "^19.0.0",

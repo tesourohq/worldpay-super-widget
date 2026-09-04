@@ -1,9 +1,6 @@
 'use client';
 
-import {
-  WIDGET_SUITE_DEFAULT_SECTIONS,
-  WorldpaySuperWidget,
-} from '@tesouro/worldpay-super-widget';
+import { WorldpaySuperWidget } from '@tesouro/worldpay-super-widget';
 
 import type { TesouroApiBaseUrl } from './tesouroApiBaseUrl';
 
@@ -44,13 +41,9 @@ async function fetchWidgetToken(): Promise<{
 }
 
 export function WidgetSuiteHost({ baseUrl }: { baseUrl: TesouroApiBaseUrl }) {
-  return (
-    <WorldpaySuperWidget
-      baseUrl={baseUrl}
-      fetcher={fetchWidgetToken}
-      // The whole registry. Every section is still gated on the minted token's
-      // scopes, so this is the demo's ceiling rather than its menu.
-      sections={WIDGET_SUITE_DEFAULT_SECTIONS}
-    />
-  );
+  // No `sections`: the demo wants the whole registry, which is what the prop
+  // defaults to. Every section is still gated on the minted token's scopes, so
+  // the default is a ceiling rather than the menu the user actually gets. Pass
+  // the prop to compose a narrower page.
+  return <WorldpaySuperWidget baseUrl={baseUrl} fetcher={fetchWidgetToken} />;
 }

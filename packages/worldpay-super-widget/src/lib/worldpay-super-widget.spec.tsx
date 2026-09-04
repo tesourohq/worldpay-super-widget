@@ -1,6 +1,6 @@
 import { render, screen, waitFor } from '@testing-library/react';
 
-import { WIDGET_SUITE_DEFAULT_SECTIONS } from '@tesouro/embedded-components-react/experimental/WidgetSuite';
+import { WIDGET_SUITE_DEFAULT_SECTIONS } from '@tesouro/embedded-components-react';
 
 import { WorldpaySuperWidget } from './worldpay-super-widget';
 
@@ -61,6 +61,25 @@ describe('WorldpaySuperWidget', () => {
 
     const nav = await screen.findByRole('navigation', { name: 'Sections' });
     expect(nav).toBeTruthy();
+    expect(
+      await screen.findByRole('button', { name: 'Dashboard' }),
+    ).toBeTruthy();
+    expect(
+      await screen.findByRole('button', { name: 'Settings' }),
+    ).toBeTruthy();
+  });
+
+  it('falls back to the default section list when none is given', async () => {
+    render(
+      <WorldpaySuperWidget baseUrl={BASE_URL} fetcher={widgetTokenFetcher} />,
+    );
+
+    const nav = await screen.findByRole('navigation', { name: 'Sections' });
+    expect(nav).toBeTruthy();
+
+    // The two ungated sections, on an unscoped token. Asserting the fallback
+    // resolved to a real list rather than to an empty menu — `sections` is
+    // forwarded as `undefined`, so the suite's own default is what fills it.
     expect(
       await screen.findByRole('button', { name: 'Dashboard' }),
     ).toBeTruthy();

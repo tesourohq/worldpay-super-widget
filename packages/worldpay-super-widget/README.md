@@ -10,7 +10,7 @@ Load the stylesheet once, then render the widget:
 
 ```tsx
 import '@tesouro/worldpay-super-widget/styles.css';
-import { WIDGET_SUITE_DEFAULT_SECTIONS, WorldpaySuperWidget } from '@tesouro/worldpay-super-widget';
+import { WorldpaySuperWidget } from '@tesouro/worldpay-super-widget';
 
 // Module scope, not an inline arrow: the refresh manager keys on this
 // reference, and a new function each render restarts the token lifecycle.
@@ -20,7 +20,7 @@ async function fetchWidgetToken() {
   return response.json(); // { widgetToken, exp }
 }
 
-<WorldpaySuperWidget baseUrl="https://api.tesouro.com" fetcher={fetchWidgetToken} sections={WIDGET_SUITE_DEFAULT_SECTIONS} />;
+<WorldpaySuperWidget baseUrl="https://api.tesouro.com" fetcher={fetchWidgetToken} />;
 ```
 
 `react` and `react-dom` (v19) are peer dependencies and must be provided by the
@@ -63,10 +63,22 @@ and re-mints in a loop.
 
 ### Sections
 
-`sections` is required with no default. A section listed there is still hidden
-when the minted token's scopes do not earn it, so it is the host's ceiling
-rather than a promise of what renders. `WIDGET_SUITE_DEFAULT_SECTIONS` is the
-whole registry in menu order; `WidgetSuiteSectionId` names them individually.
+`sections` defaults to `WIDGET_SUITE_DEFAULT_SECTIONS` — the whole registry, in
+the shipped menu order — so the common mount names only a `fetcher`. Pass the
+prop to compose a narrower page, or to order it differently:
+
+```tsx
+<WorldpaySuperWidget fetcher={fetchWidgetToken} sections={['dashboard', 'cards', 'settings']} />
+```
+
+A section listed there is still hidden when the minted token's scopes do not
+earn it, so the list is a ceiling rather than a promise of what renders. That is
+what makes the default safe: a section added to the registry upstream reaches a
+host that took the default, and a user whose token does not earn it still does
+not see it. Pin the list explicitly if you would rather that never happen.
+
+`WIDGET_SUITE_DEFAULT_SECTIONS` is re-exported to spread and edit — `sections={WIDGET_SUITE_DEFAULT_SECTIONS.filter((s) => s !== 'invoicing')}` — and
+`WidgetSuiteSectionId` names the ids individually.
 
 ## Entry points
 
@@ -75,14 +87,17 @@ whole registry in menu order; `WidgetSuiteSectionId` names them individually.
 | `@tesouro/worldpay-super-widget`            | `WorldpaySuperWidget`, `WIDGET_SUITE_DEFAULT_SECTIONS`, `WidgetSuiteSectionId`, `DEFAULT_WIDGET_TOKEN_LEAD_SECONDS` |
 | `@tesouro/worldpay-super-widget/styles.css` | The widget stylesheet                                                                                               |
 
-### About the experimental dependency
+### About the pinned dependency
 
-`WidgetSuite` comes from
-`@tesouro/embedded-components-react/experimental/WidgetSuite`. That path sits
-outside the package's semver contract — anything on it can change shape or be
-removed in a patch release. This package therefore pins
-`@tesouro/embedded-components-react` to an **exact** version, and the pin moves
-deliberately rather than by range.
+`WidgetSuite` is a primary export of `@tesouro/embedded-components-react` as of
+`0.3.44`; it previously sat on the unversioned
+`/experimental/WidgetSuite` subpath, which no longer resolves.
+
+The dependency is still pinned to an **exact** version, and the pin still moves
+deliberately rather than by range. The reason is now the stylesheet rather than
+the semver contract: `styles.css` is copied into this package's `dist/` at build
+time from whatever version is installed, so a floating range would let the CSS
+and the components it styles drift apart between installs.
 
 ### About the stylesheet
 

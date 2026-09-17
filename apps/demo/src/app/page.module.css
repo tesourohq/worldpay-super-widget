@@ -21,6 +21,13 @@
   line-height: 1.6;
 }
 
+/* The link between the two demo pages, in either direction. */
+.pageLink {
+  composes: subtitle;
+  display: inline-block;
+  margin: 0.75rem 0;
+}
+
 .subtitle code {
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   font-size: 0.8125rem;

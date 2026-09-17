@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 import { WidgetSuiteHost } from './WidgetSuiteHost';
 import { resolveTesouroApiBaseUrl } from './tesouroApiBaseUrl';
 import styles from './page.module.css';
@@ -28,6 +30,9 @@ export default function Index() {
           <code>RefreshingRootWidgetProvider</code>, authenticated by a widget
           token minted at <code>POST /api/widget-token</code>.
         </p>
+        <Link className={styles.pageLink} href="/check-capture">
+          RemoteCheckCapture demo →
+        </Link>
       </header>
 
       <main id="worldpay-super-widget" className={styles.widget}>

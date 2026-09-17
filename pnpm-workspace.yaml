@@ -17,5 +17,5 @@ allowBuilds:
   unrs-resolver: true # napi binding for the ESLint import resolver
 
 minimumReleaseAgeExclude:
-  - '@tesouro/embedded-components-react@0.5.38'
-  - '@tesouro/embedded-components-widget-token@0.5.33'
+  - '@tesouro/embedded-components-react@0.5.63'
+  - '@tesouro/embedded-components-widget-token@0.5.56'

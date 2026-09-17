@@ -11,17 +11,21 @@ sketch: it mints a real widget token server-side and mounts the widget against
 the live gateway, and the e2e suite keeps it honest. Copy from it rather than
 from a snippet.
 
-An integration is four files. Read them in this order:
+An integration is five files. Read them in this order:
 
 | #   | File                                                                                           | What it shows                                                                                            |
 | --- | ---------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
 | 1   | [`apps/demo/.env.example`](./apps/demo/.env.example)                                           | Everything you need to configure, and why none of it may be `NEXT_PUBLIC_`.                              |
 | 2   | [`apps/demo/src/app/api/widget-token/route.ts`](./apps/demo/src/app/api/widget-token/route.ts) | **The server mint.** `configureCreateWidgetToken` → `{ widgetToken, exp }`, `force-dynamic`, `no-store`. |
-| 3   | [`apps/demo/src/app/WidgetSuiteHost.tsx`](./apps/demo/src/app/WidgetSuiteHost.tsx)             | **The client mount.** One component, plus the module-scope `fetcher` the refresh manager keys on.        |
-| 4   | [`apps/demo/src/app/tesouroApiBaseUrl.ts`](./apps/demo/src/app/tesouroApiBaseUrl.ts)           | Narrowing an environment variable to the `baseUrl` union the package accepts.                            |
+| 3   | [`apps/demo/src/app/fetchWidgetToken.ts`](./apps/demo/src/app/fetchWidgetToken.ts)             | The module-scope `fetcher` the refresh manager keys on, and why it may not be a per-render closure.      |
+| 4   | [`apps/demo/src/app/WidgetSuiteHost.tsx`](./apps/demo/src/app/WidgetSuiteHost.tsx)             | **The client mount.** One component, and nothing else.                                                   |
+| 5   | [`apps/demo/src/app/tesouroApiBaseUrl.ts`](./apps/demo/src/app/tesouroApiBaseUrl.ts)           | Narrowing an environment variable to the `baseUrl` union the package accepts.                            |
 
-Then two more, when you want them:
+Then three more, when you want them:
 
+- [`apps/demo/src/app/check-capture/RemoteCheckCaptureHost.tsx`](./apps/demo/src/app/check-capture/RemoteCheckCaptureHost.tsx)
+  — mounting a widget the package does not wrap, on the same mint route. Read
+  it for the two rules that mount has to follow; the file itself says why.
 - [`apps/demo-e2e/src/widget-suite.spec.ts`](./apps/demo-e2e/src/widget-suite.spec.ts)
   — how the integration is proven, and how to exercise your own mount with no
   credentials by stubbing the mint at the network layer.

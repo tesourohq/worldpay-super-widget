@@ -28,9 +28,9 @@ export default function CheckCapturePage() {
           <code>@tesouro/embedded-components-react/experimental</code>, on the
           same server-minted widget token as the suite. It renders a Collect
           payment button that opens the capture flow; the button appears only
-          when the token earns <code>bank_account:read:org</code>,{' '}
-          <code>counterpart:read:org</code>, <code>invoice:read:org</code> and{' '}
-          <code>check_deposit:write:org</code>. Capturing a check needs camera
+          when the token earns <code>payment:collect:org</code>,{' '}
+          <code>counterpart:read:org</code> and <code>invoice:read:org</code>.
+          Capturing a check needs camera
           permission.
         </p>
       </header>

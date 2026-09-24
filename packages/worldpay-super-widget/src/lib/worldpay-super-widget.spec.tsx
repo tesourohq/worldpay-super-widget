@@ -15,13 +15,23 @@ function widgetTokenFetcher() {
 
 describe('WorldpaySuperWidget', () => {
   beforeEach(() => {
-    // The provider fetches `/init` as soon as a token resolves. Nothing here
-    // asserts on that response; the stub only keeps the suite off the network.
-    vi.spyOn(globalThis, 'fetch').mockResolvedValue(
-      new Response(JSON.stringify({ scopes: [] }), {
-        status: 200,
-        headers: { 'Content-Type': 'application/json' },
-      }),
+    // The provider fetches `/init` as soon as a token resolves. The stub keeps
+    // the suite off the network, and reports an ACTIVE org with disclosures
+    // settled so the suite goes straight to its nav rather than to onboarding
+    // or the disclosure gate. One body answers every request, so it also
+    // carries the `applications` list the suite's application-status read
+    // filters. A fresh `Response` per call: a body reads only once.
+    vi.spyOn(globalThis, 'fetch').mockImplementation(() =>
+      Promise.resolve(
+        Response.json({
+          applications: [],
+          disclosuresAccepted: true,
+          disclosuresRequired: 'NOT_REQUIRED',
+          organizationTypes: ['EMBEDDED'],
+          scopes: [],
+          status: 'ACTIVE',
+        }),
+      ),
     );
   });
 

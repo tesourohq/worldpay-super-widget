@@ -9,8 +9,8 @@ const TESOURO_API_ORIGIN = 'https://api.sandbox.stage.tesouro.com';
 /**
  * Enough of a widget-init response to earn every section in the registry, so
  * the suite renders its whole menu rather than only the two ungated sections —
- * plus the two scopes `RemoteCheckCaptureWidget`'s own gate
- * (`canCollectRemoteCheckDeposit`) needs that no section did. Scope strings are
+ * plus the scopes `RemoteCheckCaptureWidget`'s own gate
+ * (`canCollectRemoteCheckDeposit`) needs that no section does. Scope strings are
  * the ones the predicates gate on.
  */
 const INIT_RESPONSE = {
@@ -28,7 +28,7 @@ const INIT_RESPONSE = {
     'invoice:read:org',
     'expense:read:org',
     'counterpart:read:org',
-    'check_deposit:write:org',
+    'payment:collect:org',
   ],
   status: 'ACTIVE',
   userId: 'demo-user',
@@ -80,6 +80,16 @@ export async function stubWidgetBackend(page: Page, options: StubOptions = {}) {
         status: 200,
         contentType: 'application/json',
         body: JSON.stringify(INIT_RESPONSE),
+      });
+    }
+
+    // The suite reads the org's application status before its shell renders,
+    // and filters the list unguarded, so it needs a real (empty) one.
+    if (pathname.endsWith('/embedded-banking/v1/application-status')) {
+      return route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({ applications: [] }),
       });
     }
 

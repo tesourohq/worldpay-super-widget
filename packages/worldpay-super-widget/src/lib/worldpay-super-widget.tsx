@@ -23,6 +23,13 @@ import {
  */
 export const DEFAULT_WIDGET_TOKEN_LEAD_SECONDS = 120;
 
+/**
+ * Card artwork for the debit list's Create card sheet. The package ships no
+ * artwork, and without it the suite hides Create card entirely.
+ */
+const CARD_ART_SRC =
+  'https://d9qpikyk3ti89.cloudfront.net/card-images/ketchup/ketchup-credit-card.png';
+
 export interface WorldpaySuperWidgetProps {
   /**
    * Mints a widget token, and is called again to rotate it before it expires.
@@ -85,7 +92,7 @@ export function WorldpaySuperWidget({
         prop itself, so omitting it here would only duplicate that default in
         a second place for it to drift from.
       */}
-      <WidgetSuite sections={sections} />
+      <WidgetSuite cardArtSrc={CARD_ART_SRC} sections={sections} />
     </RefreshingRootWidgetProvider>
   );
 }

@@ -3,8 +3,8 @@
   "version": "0.0.1",
   "private": true,
   "dependencies": {
-    "@tesouro/embedded-components-react": "0.5.154",
-    "@tesouro/embedded-components-widget-token": "0.5.56",
+    "@tesouro/embedded-components-react": "0.9.0",
+    "@tesouro/embedded-components-widget-token": "0.9.0",
     "@tesouro/worldpay-super-widget": "workspace:*",
     "next": "~16.2.11",
     "react": "^19.0.0",
